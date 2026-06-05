@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Noir Café — Cardápio Digital / Edição White Space</title>
+
+  <meta
+    name="description"
+    content="Cardápio digital interativo do Noir Café — uma cafeteria fictícia em uma interface inspirada em jogos narrativos e menus de RPG."
+  />
+
+  <!-- Fontes: serif elegante + sans legível + mono para detalhes de sistema -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body class="theme-black">
+
+  <!-- ============ 1. TELA DE CARREGAMENTO ============ -->
+  <div id="loading" class="loading">
+    <div class="loading__inner">
+      <div class="mono small muted">// INICIALIZAÇÃO_DO_SISTEMA</div>
+
+      <div id="loading-stage" class="serif xl glitch" data-glitch="NOIR_CAFE.EXE">
+        NOIR_CAFE.EXE
+      </div>
+
+      <div class="rule"></div>
+
+      <div class="progress">
+        <div id="progress-bar" class="progress__bar"></div>
+      </div>
+
+      <div class="row-between mono tiny muted">
+        <span>CARREGANDO</span>
+        <span id="progress-pct">000%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ NAVBAR ============ -->
+  <header class="nav">
+    <a href="#hero" class="nav__brand serif">noir café</a>
+
+    <nav class="nav__center mono">
+      <a href="#menu">CARDÁPIO</a>
+      <a href="#about">SOBRE</a>
+      <a href="#contact">CONTATO</a>
+    </nav>
+
+    <div class="nav__right">
+      <button id="theme-toggle" class="btn btn-ghost mono" aria-label="Alternar tema">
+        <span class="dot"></span>
+        <span id="theme-label">BLACK</span>
+      </button>
+
+      <button id="open-auth" class="btn btn-ghost mono">
+        <span id="auth-label">ENTRAR</span>
+      </button>
+
+      <button id="open-cart" class="btn btn-ghost mono">
+        INVENTÁRIO <span id="cart-count" class="badge-count">0</span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <!-- ============ 2. HERO ============ -->
+    <section id="hero" class="section hero">
+      <div class="hero__grid">
+        <div class="hero__left fade-up">
+          <div class="mono small muted">// CAPÍTULO 01 — O CARDÁPIO SE ABRE</div>
+
+          <h1 class="serif display">Noir Café</h1>
+
+          <div class="mono small muted spaced">
+            CARDÁPIO DIGITAL &nbsp;/&nbsp; EDIÇÃO WHITE SPACE
+          </div>
+
+          <p class="lead">
+            Noir Café é um cardápio digital criado para transformar a experiência de escolher
+            um pedido em algo mais simples, elegante e memorável.
+          </p>
+
+          <div class="hero__buttons">
+            <a href="#menu" class="btn btn-primary mono">▸ VER CARDÁPIO</a>
+            <button class="btn btn-outline mono" onclick="openCart()">▸ ABRIR INVENTÁRIO</button>
+            <button class="btn btn-outline mono" onclick="openQuiz()">▸ RESPONDER QUIZ</button>
+          </div>
+
+          <p class="hint mono small muted">
+            <kbd>[T]</kbd> no teclado &nbsp;·&nbsp; toque em
+            <strong>WHITE / BLACK</strong> para atravessar o espaço.
+          </p>
+        </div>
+
+        <div class="hero__right fade-up">
+          <div class="hero__frame">
+            <img
+              src="assets/images/hero-cup.png"
+              alt="Xícara de café em line-art"
+              class="hero__cup"
+            />
+
+            <!-- vapor animado -->
+            <div class="steam">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+
+            <!-- easter egg: "algo" no balcão -->
+            <button id="easter" class="easter" aria-label="Algo" title="?">?</button>
+          </div>
+
+          <div class="mono tiny muted spaced">
+            // ALGO ESTÁ SENTADO NO BALCÃO.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 3. MENU / CARDÁPIO ============ -->
+    <section id="menu" class="section">
+      <div class="section__head">
+        <div class="mono small muted">// CAPÍTULO 02 — O CARDÁPIO</div>
+
+        <h2 class="serif huge">o cardápio</h2>
+
+        <p class="muted">
+          Selecione um item. Adicione ao inventário. Atravesse o balcão.
+        </p>
+      </div>
+
+      <!-- filtros -->
+      <div class="filters mono" id="filters">
+        <button class="filter is-active" data-filter="all">TODOS</button>
+        <button class="filter" data-filter="coffee">CAFÉS</button>
+        <button class="filter" data-filter="sweet">DOCES</button>
+        <button class="filter" data-filter="iced">GELADOS</button>
+        <button class="filter" data-filter="combo">COMBOS</button>
+        <button class="filter" data-filter="fav">★ FAVORITOS</button>
+      </div>
+
+      <!-- grade de cards: renderizada por JS -->
+      <div id="product-grid" class="product-grid"></div>
+    </section>
+
+    <!-- ============ 4. SOBRE ============ -->
+    <section id="about" class="section about">
+      <div class="mono small muted">// CAPÍTULO 03 — SOBRE</div>
+
+      <h2 class="serif huge">sobre o projeto</h2>
+
+      <div class="about__grid">
+        <p>
+          <strong>Noir Café Menu</strong> é um projeto de cardápio digital desenvolvido
+          para demonstrar como uma experiência simples pode se tornar mais memorável
+          através de uma identidade visual forte, interações claras e uma navegação
+          pensada para o usuário.
+        </p>
+
+        <p>
+          Simula um cardápio real, adaptável para pequenos negócios — cafeterias,
+          docerias, restaurantes autorais. Inclui carrinho funcional, filtros por
+          categoria, quiz de preferências, sistema de favoritos e pedido via WhatsApp.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============ 5. CONTATO ============ -->
+    <section id="contact" class="section contact">
+      <div class="mono small muted">// CAPÍTULO 04 — CONTATO</div>
+
+      <h2 class="serif huge">contato</h2>
+
+      <div class="contact__list">
+        <a
+          href="https://github.com/sthinxy"
+          target="_blank"
+          rel="noopener"
+          class="contact__card"
+        >
+          <span class="mono tiny muted">GITHUB</span>
+          <span class="serif lg">@sthinxy</span>
+        </a>
+
+        <a
+          href="https://discord.com/users/832411401649258497"
+          target="_blank"
+          rel="noopener"
+          class="contact__card"
+        >
+          <span class="mono tiny muted">DISCORD</span>
+          <span class="serif lg">usuário · sthinxy</span>
+        </a>
+
+        <a
+          href="mailto:venanciobeatriz620@gmail.com"
+          class="contact__card"
+        >
+          <span class="mono tiny muted">EMAIL</span>
+          <span class="serif lg">venanciobeatriz620@gmail.com</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ RODAPÉ / CRÉDITOS ============ -->
+  <footer class="footer">
+    <div class="footer__line"></div>
+
+    <div class="footer__inner">
+      <p class="serif italic muted">
+        "O cardápio se fechou. A memória permanece."
+      </p>
+
+      <p class="mono small">
+        desenvolvido por
+        <a href="https://github.com/sthinxy" target="_blank" rel="noopener">
+          <strong>Sthinxy</strong>
+        </a>
+        — 2026
+      </p>
+    </div>
+  </footer>
+
+  <!-- ============ CAIXA DE DIÁLOGO RPG ============ -->
+  <div id="dialog" class="dialog hidden">
+    <div class="dialog__head mono tiny muted">
+      <span>▼ ALGO</span>
+    </div>
+
+    <p id="dialog-text" class="serif lg"></p>
+  </div>
+
+  <!-- ============ CARRINHO / INVENTÁRIO ============ -->
+  <aside id="cart" class="drawer hidden" aria-hidden="true">
+    <div class="drawer__head">
+      <div>
+        <div class="mono tiny muted">// INVENTÁRIO</div>
+        <h3 class="serif xl">Itens no bolso</h3>
+      </div>
+
+      <button class="btn btn-icon" onclick="closeCart()" aria-label="Fechar">✕</button>
+    </div>
+
+    <div id="cart-items" class="drawer__items"></div>
+
+    <div class="drawer__foot">
+      <div class="row-between mono">
+        <span>SUBTOTAL</span>
+        <span id="cart-subtotal">R$ 0,00</span>
+      </div>
+
+      <div id="cart-discount-row" class="row-between mono ember hidden">
+        <span>DESCONTO_DA_MEMÓRIA</span>
+        <span id="cart-discount">- R$ 0,00</span>
+      </div>
+
+      <div class="row-between mono bold big">
+        <span>TOTAL</span>
+        <span id="cart-total">R$ 0,00</span>
+      </div>
+
+      <button class="btn btn-outline full mono" onclick="copyOrder()">▸ COPIAR PEDIDO</button>
+      <button class="btn btn-primary full mono" onclick="sendWhatsApp()">▸ ENVIAR VIA WHATSAPP</button>
+      <button class="btn btn-link full mono" onclick="clearCart()">limpar inventário</button>
+    </div>
+  </aside>
+
+  <!-- ============ MODAL DE LOGIN ============ -->
+  <div id="auth-modal" class="modal hidden">
+    <div class="modal__card">
+      <div class="row-between">
+        <div>
+          <div class="mono tiny muted">// CONTA — memória local</div>
+          <h3 class="serif xl">entre no café</h3>
+        </div>
+
+        <button class="btn btn-icon" onclick="closeAuth()">✕</button>
+      </div>
+
+      <div class="tabs mono">
+        <button class="tab is-active" data-tab="signin">ENTRAR</button>
+        <button class="tab" data-tab="signup">CRIAR CONTA</button>
+      </div>
+
+      <form id="auth-form" class="auth-form" onsubmit="return false">
+        <label class="mono tiny muted">USUÁRIO</label>
+        <input id="auth-user" type="text" autocomplete="username" />
+
+        <label class="mono tiny muted">SENHA</label>
+        <input id="auth-pass" type="password" autocomplete="current-password" />
+
+        <p id="auth-error" class="auth-error mono small ember"></p>
+
+        <button id="auth-submit" class="btn btn-primary full mono">▸ ENTRAR</button>
+
+        <p class="mono tiny muted center">
+          * Login fictício — armazenado apenas no seu navegador (localStorage).
+        </p>
+      </form>
+
+      <div id="auth-logged" class="hidden auth-logged">
+        <p class="serif lg">
+          Bem-vindo(a) de volta, <span id="auth-username"></span>.
+        </p>
+
+        <button class="btn btn-outline full mono" onclick="signOut()">▸ SAIR</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ MODAL DO QUIZ ============ -->
+  <div id="quiz-modal" class="modal hidden">
+    <div class="modal__card wide">
+      <div class="row-between">
+        <div>
+          <div class="mono tiny muted">// QUIZ — encontre sua atmosfera</div>
+          <h3 id="quiz-title" class="serif xl">qual atmosfera combina com você?</h3>
+        </div>
+
+        <button class="btn btn-icon" onclick="closeQuiz()">✕</button>
+      </div>
+
+      <div id="quiz-progress" class="quiz-progress"></div>
+      <div id="quiz-options" class="quiz-options"></div>
+      <div id="quiz-result" class="quiz-result hidden"></div>
+    </div>
+  </div>
+
+  <!-- Cursor customizado apenas no desktop -->
+  <div id="cursor-ring" class="cursor-ring"></div>
+  <div id="cursor-dot" class="cursor-dot"></div>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
