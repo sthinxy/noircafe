@@ -5,7 +5,7 @@
    ========================================================= */
 
 // >>>>>> EDITE AQUI O NÚMERO DO WHATSAPP (formato internacional, só dígitos) <<<<<<
-const WHATSAPP_NUMBER = "5571996356879";
+const WHATSAPP_NUMBER = "557196356879";
 
 // ============ DATA ============
 const PRODUCTS = [
